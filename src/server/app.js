@@ -9,9 +9,7 @@ var magnet = 'magnet:?xt=urn:btih:2b12ce09236526a728c6974c0d89d52860e82daa&dn=Ma
 app.get('/', function(req, res) {
   client.add(magnet, function (torrent) {
     torrent.files.forEach((file) => {
-
-      // this probably won't work
-      res.send(file)
+      file.createReadStream().pipe(res)
     })
   })
 })
