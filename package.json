@@ -1,0 +1,16 @@
+{
+  "name": "downpour",
+  "scripts": {
+    "start": "nodemon src/entry.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "babel-core": "^6.0.15",
+    "dotenv": "^1.2.0",
+    "express": "^4.13.3",
+    "webtorrent": "^0.62.3"
+  },
+  "devDependencies": {
+    "nodemon": "^1.8.0"
+  }
+}
