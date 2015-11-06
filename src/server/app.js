@@ -7,6 +7,11 @@ const app = express()
 const client = new WebTorrent()
 
 app.use(bodyParser())
+app.use(express.static(__dirname + '/../static'))
+
+app.get('/', function(req, res) {
+  res.sendFile(__dirname + '/static/index.html')
+})
 
 app.post('/', function(req, res) {
   const { magnet } = req.body
