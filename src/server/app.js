@@ -30,12 +30,16 @@ app.post('/', function(req, res) {
 
         res.json({
           success: true,
-          url: 'http://no37.s3.amazonaws.com/' + filename
+          url: makeS3Url(filename)
         })
       })
     })
   })
 })
+
+function makeS3Url (filename) {
+  return 'http://' + process.env.BUCKET_NAME + '.s3.amazonaws.com/' + filename
+}
 
 function makeHeaders (length) {
   return {

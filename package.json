@@ -1,7 +1,8 @@
 {
   "name": "downpour",
   "scripts": {
-    "start": "nodemon src/entry.js",
+    "start": "node src/entry.js",
+    "devstart": "nodemon src/entry.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
