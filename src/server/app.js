@@ -19,7 +19,10 @@ app.get ('/', function(req, res) {
           return res.send('error')
         }
 
-        res.send('success ' + 'http://no37.s3.amazonaws.com/' + filename)
+        res.json({
+          success: true,
+          url: 'http://no37.s3.amazonaws.com/' + filename
+        })
       })
     })
   })
