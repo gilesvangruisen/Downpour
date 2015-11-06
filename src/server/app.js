@@ -1,12 +1,16 @@
 import express from 'express'
 import WebTorrent from 'webtorrent'
 import s3 from './modules/s3'
+import bodyParser from 'body-parser'
 
 const app = express()
 const client = new WebTorrent()
 
-app.get ('/', function(req, res) {
-  const { magnet } = req.params
+app.use(bodyParser())
+
+app.post('/', function(req, res) {
+  const { magnet } = req.body
+
   client.add(magnet, function (torrent) {
     torrent.files.forEach((file) => {
       const read = file.createReadStream()
