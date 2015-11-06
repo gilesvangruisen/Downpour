@@ -9,7 +9,7 @@ app.get ('/', function(req, res) {
   const { magnet } = req.params
   client.add(magnet, function (torrent) {
     torrent.files.forEach((file) => {
-      var read = file.createReadStream()
+      const read = file.createReadStream()
       const headers = makeHeaders(file.length)
       const filename = file.name
 
