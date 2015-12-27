@@ -6,17 +6,23 @@ import bodyParser from 'body-parser'
 const app = express()
 const client = new WebTorrent()
 
-app.use(bodyParser())
+app.use(bodyParser.urlencoded({ extended: false }))
 app.use(express.static(__dirname + '/../static'))
 
 app.get('/', function(req, res) {
   res.sendFile(__dirname + '/static/index.html')
 })
 
-app.post('/', function(req, res) {
-  const { magnet } = req.body
+app.post('/download', function(req, res) {
+  const { magnet_uri } = req.body
 
-  client.add(magnet, function (torrent) {
+  if (!magnet_uri) {
+    return res.status(400).send("bad request")
+  }
+
+  client.add(magnet_uri, function (torrent) {
+    var torrentUrls = []
+
     torrent.files.forEach((file) => {
       const read = file.createReadStream()
       const headers = makeHeaders(file.length)
@@ -24,14 +30,19 @@ app.post('/', function(req, res) {
 
       s3.putStream(read, filename, headers, function (err, s3res) {
         if (err) {
-          console.log(err)
           return res.send('error')
         }
 
-        res.json({
-          success: true,
-          url: makeS3Url(filename)
-        })
+        const url = makeS3Url(filename)
+
+        if (torrentUrls.length === torrent.files.length - 1) {
+          return res.json({
+            success: true,
+            torrents: [...torrentUrls, url]
+          })
+        } else {
+          return torrentUrls.push(url)
+        }
       })
     })
   })
